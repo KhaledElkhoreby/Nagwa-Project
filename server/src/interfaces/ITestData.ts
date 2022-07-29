@@ -7,7 +7,7 @@ enum PoS {
 
 export type PartOfSpeech = keyof typeof PoS;
 
-export interface IWordList {
+export interface IWordItem {
   id: number;
   word: string;
   pos: PartOfSpeech;
@@ -15,6 +15,6 @@ export interface IWordList {
 export type IScoresList = number[];
 
 export interface ITestData {
-  wordList: IWordList[];
+  wordList: IWordItem[];
   scoresList: IScoresList;
 }
