@@ -5,6 +5,7 @@ import Choices from '../components/Choices';
 import Question from '../components/Question';
 import { reset } from '../features/score/scoreSlice';
 import { IRandomDifferentWord } from '../interfaces/IWordsResponse';
+import Card from '../layouts/Card';
 import { useGetWordsQuery } from '../services/wordsApi';
 interface IAnswerStatus {
   status: 'correct' | 'wrong' | 'undetermined';
@@ -35,20 +36,17 @@ export default function Practice() {
         const nextCouner = counter + 1;
         setQuestion(wordList[nextCouner]);
         setAnswerStatus((prev) => ({ ...prev, status: 'undetermined' }));
-        console.log(wordList);
-        console.log({ nextQuetion: wordList[counter] });
       } else {
         dispatch(reset());
         navigate('/rank');
       }
     }
   };
-  console.log({ counter });
 
   if (isError) return <div>There is something wrong</div>;
   if (isLoading) return <div>Loading...</div>;
   return (
-    <div className="card card-compact bg-base-100 shadow-2xl p-4 gap-y-4">
+    <Card>
       <div>
         <div>{progressValue / 10} / 10</div>
         <progress
@@ -72,6 +70,6 @@ export default function Practice() {
       >
         Next
       </button>
-    </div>
+    </Card>
   );
 }

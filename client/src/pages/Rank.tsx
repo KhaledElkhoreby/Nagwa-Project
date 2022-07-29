@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../app/hooks';
+import Card from '../layouts/Card';
 import { useGetRankofScoreQuery } from '../services/rankApi';
 export default function Rank() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function Rank() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="card card-compact bg-base-100 shadow-2xl p-4 gap-y-4">
+    <Card>
       <p className="text-xl font-semibold uppercase">
         Your rank{' '}
         <span
@@ -47,6 +48,6 @@ export default function Rank() {
       <button className="btn btn-primary" onClick={() => navigate('/')}>
         Play Again
       </button>
-    </div>
+    </Card>
   );
 }
