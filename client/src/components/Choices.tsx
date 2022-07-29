@@ -1,4 +1,6 @@
 import { Dispatch, MouseEvent } from 'react';
+import { useAppDispatch } from '../app/hooks';
+import { increment } from '../features/score/scoreSlice';
 interface IAnswerStatus {
   status: 'correct' | 'wrong' | 'undetermined';
 }
@@ -15,7 +17,7 @@ export default function Choices({
   answerStatus,
 }: IProps) {
   let posArray = ['adverb', 'verb', 'noun', 'adjective'];
-
+  const dispatch = useAppDispatch();
   const onClickHandler = (event: MouseEvent) => {
     // Reset Style for all choice buttons
     const button = event.target as HTMLButtonElement;
@@ -26,9 +28,11 @@ export default function Choices({
       btn.classList.remove('disabled:btn-success', 'disabled:btn-error')
     );
     if (button.textContent === CorrectPos) {
+      dispatch(increment({ isCorrect: true }));
       setAnswerStatus((prev) => ({ ...prev, status: 'correct' }));
       button.classList.add('disabled:btn-success');
     } else {
+      dispatch(increment({ isCorrect: false }));
       button.classList.add('disabled:btn-error');
       setAnswerStatus((prev) => ({ ...prev, status: 'wrong' }));
     }
@@ -40,7 +44,7 @@ export default function Choices({
         {posArray.map((pos) => (
           <button
             key={pos}
-            className={`btn btn-xs sm:btn-md btn-primary`}
+            className={`btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-primary`}
             onClick={onClickHandler}
             disabled={answerStatus.status !== 'undetermined'}
           >

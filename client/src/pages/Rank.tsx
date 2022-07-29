@@ -1,8 +1,11 @@
+import { useAppSelector } from '../app/hooks';
 import { useGetRankofScoreQuery } from '../services/rankApi';
 
 export default function Rank() {
-  const { data, isError, isLoading } = useGetRankofScoreQuery(90);
+  const score = useAppSelector(({ score }) => score.score);
+  const { data, isError, isLoading } = useGetRankofScoreQuery(score);
   const rank = data?.rank;
+  console.log({ score });
   console.log({ rank });
 
   if (isError) return <div>There is a error</div>;

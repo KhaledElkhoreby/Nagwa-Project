@@ -1,31 +1,46 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IScoreState {
-  status: string;
-  value: number;
+  numberOfAnsweredQuestions: number;
+  numberOfCorrectAnswers: number;
+  progress: number;
+  score: number;
+  currentScore: number;
 }
 
 const initialState: IScoreState = {
-  status: 'undeterminded',
-  value: 0,
+  numberOfAnsweredQuestions: 0,
+  numberOfCorrectAnswers: 0,
+  progress: 0,
+  score: 0,
+  currentScore: 0,
 };
 
 export const scoreSlice = createSlice({
   name: 'score',
   initialState,
   reducers: {
-    increment: (state: IScoreState) => {
-      state.value += 1;
+    increment: (
+      state: IScoreState,
+      action: PayloadAction<{ isCorrect: boolean }>
+    ) => {
+      state.numberOfAnsweredQuestions += 1;
+      state.progress = (state.numberOfAnsweredQuestions / 10) * 100;
+      if (action.payload.isCorrect) {
+        state.numberOfCorrectAnswers += 1;
+        state.currentScore = (state.numberOfCorrectAnswers / 10) * 100;
+      }
     },
-    decrement: (state: IScoreState) => {
-      state.value -= 1;
+    reset: (state: IScoreState) => {
+      state.score = state.currentScore;
+      state.currentScore = 0;
+      state.numberOfCorrectAnswers = 0;
+      state.numberOfAnsweredQuestions = 0;
+      state.progress = 0;
     },
   },
 });
 
-export const { increment, decrement } = scoreSlice.actions;
-
-export const selectScore = (state: RootState) => state.score.value;
+export const { increment, reset } = scoreSlice.actions;
 
 export default scoreSlice.reducer;

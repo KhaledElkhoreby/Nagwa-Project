@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import Choices from '../components/Choices';
 import Question from '../components/Question';
+import { reset } from '../features/score/scoreSlice';
 import { IRandomDifferentWord } from '../interfaces/IWordsResponse';
 import { useGetWordsQuery } from '../services/wordsApi';
 interface IAnswerStatus {
@@ -9,12 +12,15 @@ interface IAnswerStatus {
 
 export default function Practice() {
   const { data, isError, isLoading } = useGetWordsQuery();
-  const wordList = data?.randomDifferentWords;
   const [question, setQuestion] = useState<IRandomDifferentWord>();
   const [answerStatus, setAnswerStatus] = useState<IAnswerStatus>({
     status: 'undetermined',
   });
   const [counter, setCounter] = useState(0);
+  const navigate = useNavigate();
+  const progressValue = useAppSelector(({ score }) => score.progress);
+  const dispatch = useAppDispatch();
+  const wordList = data?.randomDifferentWords;
 
   useEffect(() => {
     if (wordList && wordList?.length > 0) {
@@ -29,16 +35,28 @@ export default function Practice() {
         const nextCouner = counter + 1;
         setQuestion(wordList[nextCouner]);
         setAnswerStatus((prev) => ({ ...prev, status: 'undetermined' }));
+        console.log(wordList);
         console.log({ nextQuetion: wordList[counter] });
       } else {
+        dispatch(reset());
+        navigate('/rank');
       }
     }
   };
+  console.log({ counter });
 
   if (isError) return <div>There is something wrong</div>;
   if (isLoading) return <div>Loading...</div>;
   return (
     <div className="card card-compact bg-base-100 shadow-2xl p-4 gap-y-4">
+      <div>
+        <div>{progressValue / 10} / 10</div>
+        <progress
+          className="progress progress-success h-3 md:h-4 lg:h-5"
+          value={progressValue}
+          max={100}
+        ></progress>
+      </div>
       <Question word={question?.word!} />
       <hr />
       <Choices
