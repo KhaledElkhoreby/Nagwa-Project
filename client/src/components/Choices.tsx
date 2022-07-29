@@ -1,18 +1,30 @@
-import { MouseEvent, useState } from 'react';
-
+import { Dispatch, MouseEvent } from 'react';
 interface IAnswerStatus {
   status: 'correct' | 'wrong' | 'undetermined';
 }
 
-export default function Choices({ CorrectPos }: { CorrectPos: string }) {
-  const posArray = ['adverb', 'verb', 'noun', 'adjective'];
-  const [answerStatus, setAnswerStatus] = useState<IAnswerStatus>({
-    status: 'undetermined',
-  });
+interface IProps {
+  CorrectPos: string;
+  setAnswerStatus: Dispatch<React.SetStateAction<IAnswerStatus>>;
+  answerStatus: IAnswerStatus;
+}
+
+export default function Choices({
+  CorrectPos,
+  setAnswerStatus,
+  answerStatus,
+}: IProps) {
+  let posArray = ['adverb', 'verb', 'noun', 'adjective'];
 
   const onClickHandler = (event: MouseEvent) => {
+    // Reset Style for all choice buttons
     const button = event.target as HTMLButtonElement;
-    button.classList.remove('btn-primary');
+    const buttons = Array.from(
+      button.parentElement?.getElementsByTagName('button')!
+    );
+    buttons.forEach((btn) =>
+      btn.classList.remove('disabled:btn-success', 'disabled:btn-error')
+    );
     if (button.textContent === CorrectPos) {
       setAnswerStatus((prev) => ({ ...prev, status: 'correct' }));
       button.classList.add('disabled:btn-success');
@@ -23,17 +35,29 @@ export default function Choices({ CorrectPos }: { CorrectPos: string }) {
   };
 
   return (
-    <section className=" flex gap-2 justify-center items-center">
-      {posArray.map((pos) => (
-        <button
-          key={pos}
-          className={`btn btn-xs sm:btn-md btn-primary`}
-          onClick={onClickHandler}
-          disabled={answerStatus.status !== 'undetermined'}
+    <>
+      <section className="flex gap-2 justify-center items-center">
+        {posArray.map((pos) => (
+          <button
+            key={pos}
+            className={`btn btn-xs sm:btn-md btn-primary`}
+            onClick={onClickHandler}
+            disabled={answerStatus.status !== 'undetermined'}
+          >
+            {pos}
+          </button>
+        ))}
+      </section>
+      <hr />
+      {answerStatus.status !== 'undetermined' && (
+        <h1
+          className={`capitalize text-slate-800 font-semibold ${
+            answerStatus.status === 'correct' ? 'text-success' : ''
+          }${answerStatus.status === 'wrong' ? 'text-error' : ''}`}
         >
-          {pos}
-        </button>
-      ))}
-    </section>
+          {answerStatus.status} Answer
+        </h1>
+      )}
+    </>
   );
 }

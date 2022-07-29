@@ -1,4 +1,4 @@
-export interface RandomDifferentWord {
+export interface IRandomDifferentWord {
   id: number;
   word: string;
   pos: string;
@@ -7,5 +7,5 @@ export interface RandomDifferentWord {
 export interface IWordsResponse {
   status: string;
   length: number;
-  randomDifferentWords: RandomDifferentWord[];
+  randomDifferentWords: IRandomDifferentWord[];
 }
