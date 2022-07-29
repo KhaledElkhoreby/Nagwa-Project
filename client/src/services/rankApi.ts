@@ -8,12 +8,14 @@ export const rankApi = createApi({
   }),
   tagTypes: ['Rank'],
   endpoints: (builder) => ({
-    getRankofScore: builder.mutation<IRankResponse, number>({
-      query: (score: number) => ({ url: '/', method: 'GET', body: { score } }),
-      transformResponse: (response: { data: IRankResponse }, meta, arg) =>
-        response.data,
+    getRankofScore: builder.query<IRankResponse, number>({
+      query: (score) => ({
+        url: '/',
+        body: { score },
+        method: 'POST',
+      }),
     }),
   }),
 });
 
-export const { useGetRankofScoreMutation } = rankApi;
+export const { useGetRankofScoreQuery } = rankApi;

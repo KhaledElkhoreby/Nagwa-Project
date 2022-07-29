@@ -27,7 +27,7 @@ export default function Choices({ CorrectPos }: { CorrectPos: string }) {
       {posArray.map((pos) => (
         <button
           key={pos}
-          className={`btn btn-primary `}
+          className={`btn btn-xs sm:btn-md btn-primary`}
           onClick={onClickHandler}
           disabled={answerStatus.status !== 'undetermined'}
         >

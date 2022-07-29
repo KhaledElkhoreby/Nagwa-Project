@@ -3,6 +3,6 @@ import { getRank } from '../controllers/rankController';
 
 const rankRouter = Router();
 
-rankRouter.get('/', getRank);
+rankRouter.post('/', getRank);
 
 export default rankRouter;
