@@ -21,7 +21,17 @@ const groupWordsArray = (wordList: IWordList[]) => {
 const getRandomElementFromArray = <T>(arr: T[]) =>
   arr[Math.floor(Math.random() * arr.length)];
 
-// This function take groups map and length of the returned array,
+// Shuffle array elements in-place
+const shuffleArray = <T>(arr: Array<T>) => {
+  for (let i = arr.length - 1; i > 1; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+};
+
+// This function take the groups map and length of the returned array,
 // which returns an array of random elements from different groups which element from one group must appear at least one
 const randomElementsFromDifferentGroups = (
   groupsMap: Map<PartOfSpeech, IWordList[]>,
@@ -33,6 +43,9 @@ const randomElementsFromDifferentGroups = (
     // Use (i % 4) to make sure the index not exceed the length of ['adverb', 'verb', 'noun', 'adjective']
     arr.push(getRandomElementFromArray(groupsArray[i % 4][1]));
   }
+
+  // Shuffle the array
+  shuffleArray(arr);
   return arr;
 };
 
