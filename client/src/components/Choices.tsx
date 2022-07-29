@@ -26,6 +26,7 @@ export default function Choices({ CorrectPos }: { CorrectPos: string }) {
     <section className=" flex gap-2 justify-center items-center">
       {posArray.map((pos) => (
         <button
+          key={pos}
           className={`btn btn-primary `}
           onClick={onClickHandler}
           disabled={answerStatus.status !== 'undetermined'}
