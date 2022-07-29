@@ -1,7 +1,10 @@
-import './App.css';
-
+import Practice from './pages/Practice';
 function App() {
-  return <h1 className="text-3xl">Hello World</h1>;
+  return (
+    <div className="container border border-black grid place-content-center py-10 text-center">
+      <Practice />
+    </div>
+  );
 }
 
 export default App;
