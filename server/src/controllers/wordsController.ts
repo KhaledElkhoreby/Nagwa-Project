@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { join } from 'path';
-import { ITestData, IWordList, PartOfSpeech } from '../interfaces/ITestData';
+import { ITestData, IWordItem, PartOfSpeech } from '../interfaces/ITestData';
 import catchAsync from '../utils/catchAsync';
 import jsonFileReader from '../utils/readJsonFile';
 
 // This function group words by their Part of Speech and return Map of key: ParOfSpeech => value: WordList
-const groupWordsArray = (wordList: IWordList[]) => {
+const groupWordsArray = (wordList: IWordItem[]) => {
   const posArray = ['adverb', 'verb', 'noun', 'adjective'];
-  const groupsMap = new Map<PartOfSpeech, IWordList[]>();
+  const groupsMap = new Map<PartOfSpeech, IWordItem[]>();
   posArray.forEach((pos) => {
     groupsMap.set(
       pos as PartOfSpeech,
@@ -25,28 +25,32 @@ const getRandomElementFromArray = <T>(arr: T[]) =>
 const shuffleArray = <T>(arr: Array<T>) => {
   for (let i = arr.length - 1; i > 1; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    const temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 };
 
 // This function take the groups map and length of the returned array,
 // which returns an array of random elements from different groups which element from one group must appear at least one
 const randomElementsFromDifferentGroups = (
-  groupsMap: Map<PartOfSpeech, IWordList[]>,
+  groupsMap: Map<PartOfSpeech, IWordItem[]>,
   length: number = 1
 ) => {
   const groupsArray = [...groupsMap];
-  let arr: IWordList[] = [];
-  for (let i = 0; i < length; i++) {
-    // Use (i % 4) to make sure the index not exceed the length of ['adverb', 'verb', 'noun', 'adjective']
-    arr.push(getRandomElementFromArray(groupsArray[i % 4][1]));
+  shuffleArray(groupsArray);
+  let wordItemSet = new Set<IWordItem>();
+  // To get at least one from different groups
+  for (let i = 0; i < 4; i++) {
+    wordItemSet.add(getRandomElementFromArray(groupsArray[i][1]));
   }
-
-  // Shuffle the array
-  shuffleArray(arr);
-  return arr;
+  let counter = 0;
+  while (wordItemSet.size <= length) {
+    const current = groupsArray[counter][1];
+    current.forEach((wordItem) => {
+      wordItemSet.add(wordItem);
+    });
+    ++counter;
+  }
+  return [...wordItemSet].splice(0, length);
 };
 
 export const getWords = catchAsync(
