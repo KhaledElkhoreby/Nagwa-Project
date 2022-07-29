@@ -38,12 +38,10 @@ const randomElementsFromDifferentGroups = (
   const groupsArray = [...groupsMap];
   shuffleArray(groupsArray);
   let wordItemSet = new Set<IWordItem>();
-
   // To get at least one from different groups
   for (let i = 0; i < 4; i++) {
     wordItemSet.add(getRandomElementFromArray(groupsArray[i][1]));
   }
-
   let counter = 0;
   while (wordItemSet.size <= length) {
     const current = groupsArray[counter][1];
