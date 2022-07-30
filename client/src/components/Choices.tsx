@@ -44,7 +44,7 @@ export default function Choices({
         {posArray.map((pos) => (
           <button
             key={pos}
-            className={`btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-primary`}
+            className={`btn btn-xs h-10 sm:btn-md lg:btn-lg btn-primary`}
             onClick={onClickHandler}
             disabled={answerStatus.status !== 'undetermined'}
           >
