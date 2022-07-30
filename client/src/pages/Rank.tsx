@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../app/hooks';
 import Card from '../layouts/Card';
+import ErrorMessage from '../layouts/ErrorMessage';
+import Loading from '../layouts/Loading';
 import { useGetRankofScoreQuery } from '../services/rankApi';
+
 export default function Rank() {
   const navigate = useNavigate();
   const { score } = useAppSelector(({ score }) => score);
@@ -12,8 +15,8 @@ export default function Rank() {
   const { data, isError, isLoading } = useGetRankofScoreQuery(score);
   const rank = data?.rank;
 
-  if (isError) return <div>There is a error</div>;
-  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <ErrorMessage message="There is something wrong" />;
+  if (isLoading) return <Loading />;
 
   return (
     <Card>

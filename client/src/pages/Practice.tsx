@@ -6,6 +6,8 @@ import Question from '../components/Question';
 import { reset } from '../features/score/scoreSlice';
 import { IRandomDifferentWord } from '../interfaces/IWordsResponse';
 import Card from '../layouts/Card';
+import ErrorMessage from '../layouts/ErrorMessage';
+import Loading from '../layouts/Loading';
 import { useGetWordsQuery } from '../services/wordsApi';
 interface IAnswerStatus {
   status: 'correct' | 'wrong' | 'undetermined';
@@ -43,8 +45,8 @@ export default function Practice() {
     }
   };
 
-  if (isError) return <div>There is something wrong</div>;
-  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <ErrorMessage message="There is something wrong" />;
+  if (isLoading) return <Loading />;
   return (
     <Card>
       <div>
