@@ -10,7 +10,6 @@ export const wordsApi = createApi({
   endpoints: (builder) => ({
     getWords: builder.query<IWordsResponse, void>({
       query: () => '/',
-      // Pick out data and prevent nested properties in a hook or selector
     }),
   }),
   refetchOnMountOrArgChange: true,
@@ -20,5 +19,4 @@ export const wordsApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-
 export const { useGetWordsQuery } = wordsApi;
