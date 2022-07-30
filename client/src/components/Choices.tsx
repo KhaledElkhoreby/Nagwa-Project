@@ -40,11 +40,11 @@ export default function Choices({
 
   return (
     <>
-      <section className="flex gap-2 justify-center items-center">
+      <section className="flex flex-wrap sm:flex-nowrap gap-2 justify-center items-center">
         {posArray.map((pos) => (
           <button
             key={pos}
-            className={`btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-primary`}
+            className={`btn basis-[calc(50%-0.5rem)] flex-[0.5] sm:btn-md lg:btn-lg btn-primary`}
             onClick={onClickHandler}
             disabled={answerStatus.status !== 'undetermined'}
           >
