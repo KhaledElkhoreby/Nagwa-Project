@@ -1,16 +1,57 @@
-import { beforeEach, describe, expect, it } from 'vitest';
-import request from 'supertest';
-import app from '../app';
-import { calculateRank } from './rankController';
-import jsonFileReader from '../utils/readJsonFile';
 import { join } from 'path';
-import { ITestData } from '../interfaces/ITestData';
+import request from 'supertest';
+import { beforeEach, describe, expect, it } from 'vitest';
+import app from './app';
+import { calculateRank } from './controllers/rankController';
+import { ITestData, IWordItem } from './interfaces/ITestData';
+import jsonFileReader from './utils/readJsonFile';
+
+const requestTest = request(app);
+
+describe('Words Logic', () => {
+  describe('GET /words endpoint', () => {
+    let testRequest: request.Test;
+    let response: request.Response;
+    beforeEach(async () => {
+      testRequest = requestTest.get('/api/v1/words');
+      response = await testRequest.send();
+    });
+
+    it('Should response with status code `200`', async () => {
+      expect(response.statusCode).toBe(200);
+    });
+
+    it('Should response with body contains `randomDifferentWords`', async () => {
+      expect(response.body.randomDifferentWords).toBeDefined();
+    });
+
+    it('Should response with body contains `randomDifferentWords` which is array word that contain `id` and `word` and `pos`', async () => {
+      class WordItem implements IWordItem {
+        constructor(
+          public id: number,
+          public word: string,
+          public pos: 'adverb' | 'verb' | 'noun' | 'adjective'
+        ) {}
+      }
+
+      const responseWordItem = response.body.randomDifferentWords[0];
+
+      expect(responseWordItem).toMatchObject(
+        new WordItem(
+          responseWordItem.id,
+          responseWordItem.word,
+          responseWordItem.pos
+        )
+      );
+    });
+  });
+});
 
 describe('Rank Logic', () => {
   describe('POST /rank endpoint', () => {
     let testRequest: request.Test;
     beforeEach(() => {
-      testRequest = request(app).post('/api/v1/rank');
+      testRequest = requestTest.post('/api/v1/rank');
     });
 
     it('Should response with status code `200` if the request body contains score', async () => {
@@ -56,7 +97,7 @@ describe('Rank Logic', () => {
 
   describe('Calculate Rank Function', async () => {
     const { scoresList } = await jsonFileReader<ITestData>(
-      join(`${__dirname}../../../data/TestData.json`)
+      join(`${__dirname}../../data/TestData.json`)
     );
 
     it('Should yield rank `56.67` if the score is `60`', () => {
