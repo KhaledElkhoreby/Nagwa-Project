@@ -6,7 +6,7 @@ import catchAsync from '../utils/catchAsync';
 import jsonFileReader from '../utils/readJsonFile';
 
 // This function take a score list and the score which we want to calculate its rank
-const calculateRank = (scoreList: number[], score: number) => {
+export const calculateRank = (scoreList: number[], score: number) => {
   let totalNumberOfScores = scoreList.length;
 
   // Calculate the count of numbers below this score in the score list

@@ -10,7 +10,10 @@
     "watch": "tsc -w",
     "dev": "nodemon dist/app.js",
     "prod": "tsc && cross-env NODE_ENV=production node dist/app.js",
-    "prettier": "npx prettier --write ."
+    "prettier": "npx prettier --write .",
+    "test": "vitest --run ",
+    "test:watch": "vitest --watch --reporter verbose",
+    "test:coverage": "vitest  --coverage"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -26,8 +29,12 @@
     "@types/helmet": "^4.0.0",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.6.1",
+    "@types/supertest": "^2.0.12",
+    "c8": "^7.12.0",
     "nodemon": "^2.0.19",
+    "supertest": "^6.2.4",
     "tsc": "^2.0.4",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "vitest": "^0.20.2"
   }
 }

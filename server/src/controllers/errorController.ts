@@ -3,7 +3,7 @@ import { ErrorRequestHandler } from 'express';
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
-  console.log({ err });
+  // console.log(err);
 
   // Operational, trusted error:send message to client
   if (err.isOperational) {

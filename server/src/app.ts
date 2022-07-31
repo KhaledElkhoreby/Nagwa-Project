@@ -38,6 +38,9 @@ app.all('*', (req, res, next) => {
 // Global error handler middleware
 app.use(globalErrorHandler);
 
+// Exported For testing
+export default app;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
