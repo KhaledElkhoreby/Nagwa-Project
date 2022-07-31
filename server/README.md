@@ -28,3 +28,15 @@ with host [http://localhost:5000](http://localhost:5000).
 ### `yarn prod`
 
 Builds the app for production to the `dist` folder.
+
+### `yarn test`
+
+Launches the test runner
+
+### `yarn test:watch`
+
+Launches the test runner in the interactive watch mode.
+
+### `yarn test:coverage`
+
+Launches the test runner for coverage in the interactive watch mode.
